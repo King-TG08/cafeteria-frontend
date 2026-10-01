@@ -3,38 +3,35 @@ import { api } from '../api';
 import EditarVenta from './EditarVenta';
 
 function ListaVentas() {
-  // 1. Estados de la aplicación
   const [ventas, setVentas] = useState([]);
   const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
 
-  // 2. Funciones de carga e interacción con la API (Render/Axios)
   const cargarVentas = () => {
     api.get('/ventas')
-      .then(res => setVentas(res.data))
-      .catch(err => console.error('Error al obtener ventas:', err));
+      .then((res) => setVentas(res.data))
+      .catch((err) => console.error('Error al obtener ventas:', err));
   };
 
-  const eliminarVenta = (id) => {
-    if (window.confirm('¿Seguro que deseas eliminar esta venta?')) {
-      api.delete(`/ventas/${id}`)
-        .then(res => {
-          alert(res.data.message);
-          cargarVentas(); // Recarga la lista después de borrar
-        })
-        .catch(err => console.error('Error al eliminar venta:', err));
-    }
-  };
-
-  // 3. Efectos de React
   useEffect(() => {
     cargarVentas();
   }, []);
 
-  // 4. Renderizado del componente (Interfaz de usuario)
+  const eliminarVenta = (id) => {
+    if (!window.confirm('¿Seguro que deseas eliminar esta venta?')) {
+      return;
+    }
+
+    api.delete(`/ventas/${id}`)
+      .then((res) => {
+        alert(res.data.message);
+        cargarVentas();
+      })
+      .catch((err) => console.error('Error al eliminar venta:', err));
+  };
+
   return (
     <div>
       <h2>Ventas de la Cafetería</h2>
-      
       <table border="1">
         <thead>
           <tr>
@@ -48,31 +45,34 @@ function ListaVentas() {
           </tr>
         </thead>
         <tbody>
-          {ventas.map(v => (
-            <tr key={v.id}>
-              <td>{v.estudiante}</td>
-              <td>{v.producto}</td>
-              <td>{v.cantidad}</td>
-              <td>\${v.precio}</td>
-              <td>\${v.total}</td>
-              <td>{v.fecha}</td>
+          {ventas.map((venta) => (
+            <tr key={venta.id}>
+              <td>{venta.estudiante}</td>
+              <td>{venta.producto}</td>
+              <td>{venta.cantidad}</td>
+              <td>${venta.precio}</td>
+              <td>${venta.total}</td>
+              <td>{venta.fecha}</td>
               <td>
-                <button onClick={() => setVentaSeleccionada(v)}>Editar</button>
-                <button onClick={() => eliminarVenta(v.id)}>Eliminar</button>
+                <button type="button" onClick={() => setVentaSeleccionada(venta)}>
+                  Editar
+                </button>
+                <button type="button" onClick={() => eliminarVenta(venta.id)}>
+                  Eliminar
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Formulario modal o condicional para editar */}
       {ventaSeleccionada && (
-        <EditarVenta 
-          venta={ventaSeleccionada} 
+        <EditarVenta
+          venta={ventaSeleccionada}
           onUpdate={() => {
-            setVentaSeleccionada(null); // Cierra el formulario de edición
-            cargarVentas();             // Refresca la tabla
-          }} 
+            setVentaSeleccionada(null);
+            cargarVentas();
+          }}
         />
       )}
     </div>

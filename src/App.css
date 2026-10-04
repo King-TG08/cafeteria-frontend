@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Courier Prime', monospace;
+  background-color: #d4c5b0;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+  color: #3e2723;
+  min-height: 100vh;
+}
+.app-vintage { min-height: 100vh; display: flex; flex-direction: column; }
+
+.pizarra {
+  background: #2c3e2d; color: #f4f1ea; padding: 40px 20px; text-align: center;
+  border-bottom: 10px solid #5c4033; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  font-family: 'Special Elite', cursive;
+}
+.pizarra h1 { font-size: 3rem; letter-spacing: 2px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5); }
+.pizarra p { font-size: 1.2rem; margin-top: 10px; font-style: italic; }
+
+.mesa { flex: 1; padding: 40px 20px; max-width: 1200px; margin: 0 auto; width: 100%; }
+.lista-recibos { margin-top: 20px; }
+.controles { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px dashed #5c4033; padding-bottom: 10px; }
+.controles h2 { font-family: 'Special Elite', cursive; font-size: 2rem; }
+
+.mesa-recibos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+
+.recibo {
+  background: #fcfaf2; padding: 25px; box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+  position: relative; border: 1px solid #e0dcd3; transform: rotate(-1deg); transition: transform 0.3s;
+}
+.recibo:nth-child(even) { transform: rotate(1deg); }
+.recibo:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
+
+.recibo::after {
+  content: ""; position: absolute; bottom: -10px; left: 0; width: 100%; height: 10px;
+  background: linear-gradient(135deg, #fcfaf2 33.33%, transparent 33.33%) 0 0 / 10px 100%, linear-gradient(225deg, #fcfaf2 33.33%, transparent 33.33%) 0 0 / 10px 100%;
+}
+.recibo-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; }
+.sello-pagado { color: #d32f2f; border: 2px solid #d32f2f; padding: 2px 8px; border-radius: 4px; transform: rotate(-15deg); font-weight: bold; opacity: 0.8; }
+.recibo-linea { border-bottom: 1px dashed #999; margin: 15px 0; }
+.recibo-datos p { margin: 8px 0; font-size: 0.95rem; }
+.recibo-total { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: bold; margin-top: 10px; }
+.recibo-fecha { text-align: right; font-size: 0.8rem; color: #666; margin-top: 10px; }
+.recibo-acciones { display: flex; gap: 10px; margin-top: 20px; border-top: 1px dashed #999; padding-top: 15px; }
+
+.btn-sello { background: #8b0000; color: white; border: none; padding: 10px 20px; font-family: 'Special Elite', cursive; font-size: 1.1rem; cursor: pointer; box-shadow: 2px 2px 0px #5c4033; }
+.btn-sello:active { transform: translate(2px, 2px); box-shadow: none; }
+.btn-editar-vintage, .btn-anular-vintage { flex: 1; padding: 8px; font-family: 'Courier Prime', monospace; font-weight: bold; cursor: pointer; background: transparent; border: 1px solid #3e2723; }
+.btn-editar-vintage:hover { background: #3e2723; color: white; }
+.btn-anular-vintage { border-color: #8b0000; color: #8b0000; }
+.btn-anular-vintage:hover { background: #8b0000; color: white; }
+
+.libreta {
+  background: #fff; max-width: 500px; margin: 0 auto; padding: 40px; box-shadow: 5px 5px 20px rgba(0,0,0,0.2);
+  background-image: linear-gradient(#fff 0%, #fff 95%, #e74c3c 95%, #e74c3c 100%); background-size: 100% 35px; border-left: 4px solid #e74c3c;
+}
+.libreta h2 { font-family: 'Special Elite', cursive; margin-bottom: 30px; text-align: center; }
+.form-libreta { display: flex; flex-direction: column; gap: 25px; }
+.form-libreta label { display: flex; flex-direction: column; font-weight: bold; font-size: 0.9rem; }
+.form-libreta input, .form-libreta select { background: transparent; border: none; border-bottom: 1px dashed #3e2723; padding: 8px 5px; font-family: 'Courier Prime', monospace; font-size: 1rem; outline: none; margin-top: 5px; }
+.libreta-acciones { display: flex; gap: 15px; margin-top: 20px; }
+.btn-cancelar-vintage { flex: 1; background: transparent; border: 2px solid #3e2723; padding: 10px; font-family: 'Special Elite', cursive; font-size: 1.1rem; cursor: pointer; }
+
+.suelo { text-align: center; padding: 30px; color: #5c4033; font-family: 'Special Elite', cursive; background: #bcaaa4; border-top: 5px solid #8d6e63; }
+.loading-text { text-align: center; font-size: 1.5rem; font-family: 'Special Elite', cursive; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+@media (max-width: 600px) { .mesa-recibos { grid-template-columns: 1fr; } .pizarra h1 { font-size: 2rem; } }
